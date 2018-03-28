@@ -8,12 +8,39 @@ import java.util.concurrent.ConcurrentLinkedQueue
  */
 val INTERVAL = 50L
 class AnimatorQueue {
+    val runner : Runner = Runner(0)
+    var thread : Thread ?= null
+    val startcb : () -> Unit = {
+        thread = Thread(runner)
+        thread?.start()
+    }
+    val stopcb : () -> Unit = {
+        while (true) {
+            try {
+                thread?.join()
+                break
+            }
+            catch (ex : Exception) {
 
+            }
+        }
+    }
+    fun addView(view : RoundBorderImageView) {
+        runner.addView(view, startcb)
+    }
+    fun pause() {
+        if (runner.pause()) {
+            stopcb()
+        }
+    }
+    fun resume() {
+        runner.resume(startcb)
+    }
     companion object {
         private val animatorQueue = AnimatorQueue()
         fun getInstance() : AnimatorQueue = animatorQueue
     }
-    data class Runner(var i : Int, var updatecb : () -> Unit) : Runnable {
+    data class Runner(var i : Int) : Runnable {
         var running : Boolean = true
         var paused : Boolean = false
         var views : ConcurrentLinkedQueue<RoundBorderImageView> = ConcurrentLinkedQueue()
@@ -34,16 +61,18 @@ class AnimatorQueue {
                 }
             }
         }
-        fun pause() {
+        fun pause() : Boolean{
             if (running) {
                 running = false
                 paused = true
             }
+            return paused
         }
         fun resume(startcb : () -> Unit) {
             if (!running && paused) {
                 paused = false
                 running = true
+                startcb()
             }
         }
         override fun run() {
