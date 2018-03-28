@@ -3,6 +3,7 @@ package ui.anwesome.com.roundborderimageview
 /**
  * Created by anweshmishra on 28/03/18.
  */
+import android.app.Activity
 import android.content.*
 import android.graphics.*
 import android.view.*
@@ -88,6 +89,19 @@ class RoundBorderImageView(ctx : Context, var bitmap : Bitmap) : View(ctx) {
             roundBorderImage.startUpdating {
                 AnimatorQueue.getInstance().addView(view)
             }
+        }
+    }
+    companion object {
+        fun create(activity : Activity, bitmap : Bitmap) : RoundBorderImageView {
+            val view = RoundBorderImageView(activity, bitmap)
+            activity.addContentView(view, ViewGroup.LayoutParams(bitmap.width, bitmap.height))
+            return view 
+        }
+        fun pause() {
+            AnimatorQueue.getInstance().pause()
+        }
+        fun resume() {
+            AnimatorQueue.getInstance().resume()
         }
     }
 }
