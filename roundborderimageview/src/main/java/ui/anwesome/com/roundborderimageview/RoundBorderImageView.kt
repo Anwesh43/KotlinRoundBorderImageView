@@ -7,17 +7,19 @@ import android.content.*
 import android.graphics.*
 import android.view.*
 class RoundBorderImageView(ctx : Context, var bitmap : Bitmap) : View(ctx) {
-    val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    val renderer : Renderer = Renderer(this)
     override fun onDraw(canvas : Canvas) {
-
+        renderer.render(canvas, paint)
     }
     fun update(stopcb : () -> Unit) {
+        renderer.update(stopcb)
         postInvalidate()
     }
     override fun onTouchEvent(event : MotionEvent) : Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-
+                renderer.handleTap()
             }
         }
         return true
