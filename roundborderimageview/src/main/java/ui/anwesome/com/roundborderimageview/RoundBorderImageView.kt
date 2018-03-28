@@ -71,4 +71,21 @@ class RoundBorderImageView(ctx : Context, var bitmap : Bitmap) : View(ctx) {
             state.startUpdating(startcb)
         }
     }
+    data class Renderer (var view : RoundBorderImageView) {
+        val roundBorderImage : RoundBorderImage = RoundBorderImage(0, view.bitmap)
+        fun render (canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            roundBorderImage.draw(canvas, paint)
+        }
+        fun update(stopcb : () -> Unit) {
+            roundBorderImage.update {
+                stopcb()
+            }
+        }
+        fun handleTap() {
+            roundBorderImage.startUpdating {
+                AnimatorQueue.getInstance().addView(view)
+            }
+        }
+    }
 }
