@@ -95,7 +95,7 @@ class RoundBorderImageView(ctx : Context, var bitmap : Bitmap) : View(ctx) {
         fun create(activity : Activity, bitmap : Bitmap) : RoundBorderImageView {
             val view = RoundBorderImageView(activity, bitmap)
             activity.addContentView(view, ViewGroup.LayoutParams(bitmap.width, bitmap.height))
-            return view 
+            return view
         }
         fun pause() {
             AnimatorQueue.getInstance().pause()
