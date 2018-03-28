@@ -11,6 +11,9 @@ class RoundBorderImageView(ctx : Context, var bitmap : Bitmap) : View(ctx) {
     override fun onDraw(canvas : Canvas) {
 
     }
+    fun update(stopcb : () -> Unit) {
+        postInvalidate()
+    }
     override fun onTouchEvent(event : MotionEvent) : Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
