@@ -39,4 +39,36 @@ class RoundBorderImageView(ctx : Context, var bitmap : Bitmap) : View(ctx) {
             }
         }
     }
+    data class RoundBorderImage (var i : Int, var bitmap : Bitmap, val state : State = State()) {
+        var resized : Boolean = false
+        fun draw(canvas : Canvas, paint : Paint) {
+            val w = canvas.width.toFloat()
+            val h = canvas.height.toFloat()
+            val size = Math.min(w, h).toInt()
+            if (!resized) {
+                bitmap = Bitmap.createScaledBitmap(bitmap, size, size, true)
+                resized = true
+            }
+            val r = size.toFloat() / 4
+            canvas.save()
+            canvas.translate(w/2, h/2)
+            canvas.rotate(180f * state.scale)
+            val updatedScale = 0.5f + 0.5f * state.scale
+            canvas.scale(updatedScale, updatedScale)
+            paint.color = Color.WHITE
+            canvas.drawCircle(0f, 0f, 6 * r/ 5 , paint)
+            canvas.save()
+            val path = Path()
+            path.addCircle(0f, 0f, r, Path.Direction.CW)
+            canvas.clipPath(path)
+            canvas.restore()
+            canvas.restore()
+        }
+        fun update(stopcb : (Float) -> Unit) {
+            state.update(stopcb)
+        }
+        fun startUpdating(startcb : () -> Unit) {
+            state.startUpdating(startcb)
+        }
+    }
 }
