@@ -41,7 +41,7 @@ class AnimatorQueue {
         fun getInstance() : AnimatorQueue = animatorQueue
     }
     data class Runner(var i : Int) : Runnable {
-        var running : Boolean = true
+        var running : Boolean = false
         var paused : Boolean = false
         var views : ConcurrentLinkedQueue<RoundBorderImageView> = ConcurrentLinkedQueue()
         fun addView(view : RoundBorderImageView, startcb : () -> Unit) {

@@ -64,6 +64,7 @@ class RoundBorderImageView(ctx : Context, var bitmap : Bitmap) : View(ctx) {
             val path = Path()
             path.addCircle(0f, 0f, r, Path.Direction.CW)
             canvas.clipPath(path)
+            canvas.drawBitmap(bitmap, -r, -r , paint)
             canvas.restore()
             canvas.restore()
         }
